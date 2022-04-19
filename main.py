@@ -1,17 +1,18 @@
 from random import randint
 
 
+k = randint(0, 10)
+n = randint(5, 20)
 
-k = randint(0,10)
-n = randint(5,20)
 
 class Person:
     id_ = 0
-    def __init__(self,floor_start, floor_end) -> None:
+
+    def __init__(self, floor_start, floor_end) -> None:
         self.id_ += 1
         self.floor_start = floor_start
         self.floor_end = floor_end
-        self.top_bot = bool # True = top, False = bot
+        self.top_bot = bool  # True = top, False = bot
         self.floor = 1
 
         if self.floor_start > self.floor_end:
@@ -22,7 +23,6 @@ class Person:
             print(f"Person {self.id_} cannot start and end on the same floor")
 
 
-
 class Elevator:
 
     people = list()
@@ -31,10 +31,10 @@ class Elevator:
 
     def set_passanger(self, passanger: Person):
         self.people.append(passanger)
-    
-    def get_passanger(self)-> list[Person]:
+
+    def get_passanger(self) -> list[Person]:
         return self.people
-    
+
     def delete_passanger(self, passanger: Person):
         if passanger in self.get_passanger():
             self.get_passanger().pop(self.get_passanger().index(passanger))
@@ -44,23 +44,28 @@ class Elevator:
         self.create_floors()
 
     def create_floors(self):
-        self.dict_floors = {k: list() for k in range(1, self.number+1)}  # k - это этаж v - это информация
+        self.dict_floors = {
+            k: list() for k in range(1, self.number + 1)
+        }  # k - это этаж v - это информация
 
     def down_button(self, passanger: Person):
-        print(f"Лифт поехал верх на {passanger.floor_end} этаж для пассажира с id:{passanger.id_}")
+        print(
+            f"Лифт поехал верх на {passanger.floor_end} этаж для пассажира с id:{passanger.id_}"
+        )
         self.position = passanger.floor_end
-        
 
     def top_button(self, passanger: Person):
-        print(f"Лифт поехал вниз на {passanger.floor_end} этаж для пассажира с id:{passanger.id_}")
+        print(
+            f"Лифт поехал вниз на {passanger.floor_end} этаж для пассажира с id:{passanger.id_}"
+        )
         self.position = passanger.floor_end
 
     def check_elevator(self, passanger: Person) -> None:
         # print(passanger, 'PASSANGERфывьтфытвтфьытвфвьытфьвтфы')
         self.dict_floors[passanger.floor_start].append(passanger)
-        if self.position in self.dict_floors: 
+        if self.position in self.dict_floors:
             return self.position
-    
+
     @classmethod
     def get_max_people(cls):
         return cls.max_count_people
@@ -75,7 +80,7 @@ class Elevator:
             self.set_passanger(passanger=passanger)
             self.call_elevator(passanger=passanger)
             return True
-        
+
     def call_elevator(self, passanger: Person):
         print(f"Лифт вызвали на {passanger.floor_start} этаж")
         if passanger.top_bot:
@@ -90,7 +95,7 @@ class Elevator:
             # print(self.dict_floors, 'asdasdasdasdasd')
             if not v:
                 print(f"Пассажиров нет на {k} этаже")
-            
+
             else:
                 print(v)
                 print(f"Пассажиров есть на {k} этаже")
@@ -111,11 +116,9 @@ passager_list = list()
 elevator = Elevator(n)
 print(elevator.number)
 
-for i in range(0, k): 
-    passanger = Person(floor_start = randint(5, n), floor_end = randint(5,n))
+for i in range(0, k):
+    passanger = Person(floor_start=randint(5, n), floor_end=randint(5, n))
     elevator.check_elevator(passanger=passanger)
 
 elevator.start()
 print(elevator.dict_floors)
-
-
